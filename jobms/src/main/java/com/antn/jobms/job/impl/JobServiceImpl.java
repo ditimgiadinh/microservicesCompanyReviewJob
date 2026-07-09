@@ -10,6 +10,7 @@ import com.antn.jobms.job.JobRepository;
 import com.antn.jobms.job.JobService;
 import com.antn.jobms.job.dto.JobWithCompanyDTO;
 import com.antn.jobms.job.external.Company;
+import com.antn.jobms.job.mapper.JobMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -55,13 +56,14 @@ public class JobServiceImpl implements JobService {
 
     private JobWithCompanyDTO convertToDto(Job job)
     {
-        JobWithCompanyDTO jobWithCompanyDTO = new JobWithCompanyDTO();
-        jobWithCompanyDTO.setJob(job);
+        //JobWithCompanyDTO jobWithCompanyDTO = new JobWithCompanyDTO();
+        //jobWithCompanyDTO.setJob(job);
         //RestTemplate restTemplate = new RestTemplate();
 
         Company company = restTemplate.getForObject(
                 "http://COMPANY-SERVICE:8081/companies/" + job.getCompanyId(),
                 Company.class);
+        JobWithCompanyDTO jobWithCompanyDTO = JobMapper.mapToJobWithCompanyDto(job,company);
         jobWithCompanyDTO.setCompany(company);
         //jobWithCompanyDTOs.add(jobWithCompanyDTO);
         return jobWithCompanyDTO;
