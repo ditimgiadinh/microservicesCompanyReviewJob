@@ -1,9 +1,11 @@
 package com.antn.jobms.job.dto;
 
-import com.antn.jobms.job.Job;
 import com.antn.jobms.job.external.Company;
+import com.antn.jobms.job.external.Review;
 
-public class JobWithCompanyDTO {
+import java.util.List;
+
+public class JobDTO {
 
     public Long getId() {
         return id;
@@ -61,6 +63,15 @@ public class JobWithCompanyDTO {
         this.company = company;
     }
 
+
+    public List<Review> getReview() {
+        return review;
+    }
+
+    public void setReview(List<Review> review) {
+        this.review = review;
+    }
+
     private Long id;
     private String title;
     private String description;
@@ -68,4 +79,5 @@ public class JobWithCompanyDTO {
     private String maxSalary;
     private String location;
     private Company company;
+    private List<Review> review;
 }

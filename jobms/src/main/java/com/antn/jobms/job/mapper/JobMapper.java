@@ -1,22 +1,27 @@
 package com.antn.jobms.job.mapper;
 
 import com.antn.jobms.job.Job;
-import com.antn.jobms.job.dto.JobWithCompanyDTO;
+import com.antn.jobms.job.dto.JobDTO;
 import com.antn.jobms.job.external.Company;
+import com.antn.jobms.job.external.Review;
+
+import java.util.List;
 
 public class JobMapper {
-    public static JobWithCompanyDTO mapToJobWithCompanyDto(
+    public static JobDTO mapToJobWithCompanyDto(
                     Job job,
-            Company company) {
-        JobWithCompanyDTO jobWithCompanyDTO = new JobWithCompanyDTO();
-        jobWithCompanyDTO.setId(job.getId());
-        jobWithCompanyDTO.setTitle(job.getTitle());
-        jobWithCompanyDTO.setDescription(job.getDescription());
-        jobWithCompanyDTO.setLocation(job.getLocation());
-        jobWithCompanyDTO.setMaxSalary(job.getMaxSalary());
-        jobWithCompanyDTO.setMinsalary(job.getMinsalary());
-        jobWithCompanyDTO.setCompany(company);
+            Company company,
+                    List<Review> reviews) {
+        JobDTO jobDTO = new JobDTO();
+        jobDTO.setId(job.getId());
+        jobDTO.setTitle(job.getTitle());
+        jobDTO.setDescription(job.getDescription());
+        jobDTO.setLocation(job.getLocation());
+        jobDTO.setMaxSalary(job.getMaxSalary());
+        jobDTO.setMinsalary(job.getMinsalary());
+        jobDTO.setCompany(company);
+        jobDTO.setReview(reviews);
 
-        return jobWithCompanyDTO;
+        return jobDTO;
     }
 }
