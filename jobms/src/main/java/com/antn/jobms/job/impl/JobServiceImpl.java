@@ -14,6 +14,8 @@ import com.antn.jobms.job.dto.JobDTO;
 import com.antn.jobms.job.external.Company;
 import com.antn.jobms.job.external.Review;
 import com.antn.jobms.job.mapper.JobMapper;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -33,6 +35,7 @@ public class JobServiceImpl implements JobService {
     //private  List<Job> jobs = new ArrayList<>();
     JobRepository jobRepository;
     private Long nextId = 1L;
+    private int attempt;
 
     @Autowired
     RestTemplate restTemplate;
@@ -48,8 +51,14 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
+    //@CircuitBreaker(name ="companyBreaker",
+    //                fallbackMethod = "companyBreakerFallback")
+
+    @Retry(name ="companyBreaker",
+            fallbackMethod = "companyBreakerFallback")
     public List<JobDTO> findAll() {
 
+        System.out.println("Atteemp:" + ++attempt);
         List<Job> jobs = jobRepository.findAll();
         List<JobDTO> jobDTOS = new ArrayList<>();
 
@@ -64,6 +73,12 @@ public class JobServiceImpl implements JobService {
         //return jobRepository.findAll();
         //return List.of();
         //return jobs;
+    }
+    public List<String> companyBreakerFallback(Exception e)
+    {
+        List<String> list = new ArrayList<>();
+        list.add("Dummy");
+        return list;
     }
 
     private JobDTO convertToDto(Job job)
